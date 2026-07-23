@@ -1,565 +1,703 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeFlow | Visual Development Platform</title>
+    <title>Wild Census | 野生动物保护实录</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        :root {
+            --ink: #17251c;
+            --ink-soft: #33452f;
+            --parchment: #f2ecda;
+            --parchment-dim: #e9e1c8;
+            --moss: #5c7a5e;
+            --moss-deep: #3c5940;
+            --rust: #a8402c;
+            --gold: #c9982e;
+            --line: rgba(23, 37, 28, 0.14);
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9fbfd;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.65;
+            color: var(--ink);
+            background-color: var(--parchment);
         }
-        
+
         h1, h2, h3, h4 {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Zilla Slab', serif;
             font-weight: 600;
-            line-height: 1.3;
+            line-height: 1.2;
         }
-        
+
+        .mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1180px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
-        
+
+        /* Stamp badge — signature element */
+        .stamp {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--rust);
+            border: 2px solid var(--rust);
+            padding: 4px 12px;
+            border-radius: 2px;
+            transform: rotate(-2deg);
+        }
+
+        .stamp.moss {
+            color: var(--moss-deep);
+            border-color: var(--moss-deep);
+        }
+
         /* Header & Navigation */
         header {
-            background-color: #fff;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            background-color: var(--parchment);
+            border-bottom: 1px solid var(--line);
             position: fixed;
             width: 100%;
             z-index: 1000;
         }
-        
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
         }
-        
+
         .logo-icon {
-            color: #4361ee;
-            font-size: 28px;
+            color: var(--rust);
+            font-size: 24px;
             margin-right: 10px;
         }
-        
+
         .logo-text {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
+            font-family: 'Zilla Slab', serif;
+            font-size: 23px;
             font-weight: 700;
-            color: #333;
+            color: var(--ink);
+            letter-spacing: 0.01em;
         }
-        
+
         .logo-text span {
-            color: #4361ee;
+            color: var(--moss-deep);
         }
-        
+
         .nav-links {
             display: flex;
             list-style: none;
         }
-        
+
         .nav-links li {
-            margin-left: 30px;
+            margin-left: 32px;
         }
-        
+
         .nav-links a {
             text-decoration: none;
-            color: #555;
+            color: var(--ink-soft);
             font-weight: 500;
+            font-size: 15px;
             transition: color 0.3s;
         }
-        
+
         .nav-links a:hover {
-            color: #4361ee;
+            color: var(--rust);
         }
-        
+
         .cta-button {
-            background-color: #4361ee;
-            color: white;
+            background-color: var(--rust);
+            color: var(--parchment);
             border: none;
-            padding: 12px 28px;
-            border-radius: 6px;
+            padding: 12px 26px;
+            border-radius: 3px;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
+            font-size: 15px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
         }
-        
+
         .cta-button:hover {
-            background-color: #3a56d4;
+            background-color: #8c3423;
             transform: translateY(-2px);
         }
-        
+
+        .secondary-button {
+            background-color: transparent;
+            color: var(--ink);
+            border: 2px solid var(--ink);
+            padding: 12px 26px;
+            border-radius: 3px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .secondary-button:hover {
+            background-color: var(--ink);
+            color: var(--parchment);
+        }
+
         .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
             font-size: 24px;
-            color: #333;
+            color: var(--ink);
             cursor: pointer;
         }
-        
+
         /* Hero Section */
         .hero {
-            padding: 150px 0 100px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #f9fbfd 100%);
+            padding: 160px 0 90px;
+            background-color: var(--parchment);
+            border-bottom: 1px dashed var(--line);
         }
-        
+
+        .hero-eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--moss-deep);
+            margin-bottom: 18px;
+        }
+
         .hero-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        
+
         .hero-text {
             flex: 1;
-            padding-right: 40px;
+            padding-right: 50px;
         }
-        
+
         .hero-text h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #222;
+            font-size: 46px;
+            margin-bottom: 22px;
+            color: var(--ink);
         }
-        
+
         .hero-text h1 span {
-            color: #4361ee;
+            color: var(--rust);
         }
-        
+
         .hero-text p {
-            font-size: 18px;
-            color: #666;
+            font-size: 17px;
+            color: var(--ink-soft);
             margin-bottom: 30px;
-            max-width: 600px;
+            max-width: 540px;
         }
-        
+
         .hero-buttons {
             display: flex;
             gap: 15px;
+            margin-bottom: 26px;
         }
-        
-        .secondary-button {
-            background-color: white;
-            color: #4361ee;
-            border: 2px solid #4361ee;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .secondary-button:hover {
-            background-color: #f0f4ff;
-        }
-        
+
         .hero-image {
             flex: 1;
             text-align: center;
-        }
-        
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
-        }
-        
-        /* Features Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-size: 36px;
-            color: #222;
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .features {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        
-        .feature-card {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            background-color: #eef2ff;
-            color: #4361ee;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 28px;
-        }
-        
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .feature-card p {
-            color: #666;
-        }
-        
-        /* Benefits Section */
-        .benefits {
-            padding: 100px 0;
-            background-color: #f0f4ff;
-        }
-        
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .benefit-item {
-            text-align: center;
-            padding: 30px 20px;
-        }
-        
-        .benefit-icon {
-            color: #4361ee;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        
-        .benefit-item h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .benefit-item p {
-            color: #666;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
             position: relative;
         }
-        
-        .testimonial {
-            background: #f9fbfd;
-            padding: 40px;
-            border-radius: 10px;
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 4px;
+            filter: sepia(8%) saturate(105%);
+            box-shadow: 0 25px 45px rgba(23, 37, 28, 0.25);
+        }
+
+        .hero-image .stamp {
+            position: absolute;
+            top: -14px;
+            right: 10px;
+            background: var(--parchment);
+        }
+
+        /* Section Titles */
+        .section-title {
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 55px;
         }
-        
-        .testimonial-text {
-            font-size: 18px;
-            font-style: italic;
-            margin-bottom: 30px;
-            color: #555;
+
+        .section-title .eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--moss-deep);
+            margin-bottom: 12px;
         }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .section-title h2 {
+            font-size: 34px;
+            color: var(--ink);
+            margin-bottom: 15px;
         }
-        
-        .author-avatar {
+
+        .section-title p {
+            color: var(--ink-soft);
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* Programs / Features */
+        .programs {
+            padding: 100px 0;
+            background-color: #fbf8ee;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 34px;
+        }
+
+        .program-card {
+            background: var(--parchment);
+            padding: 30px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .program-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 28px rgba(23, 37, 28, 0.1);
+        }
+
+        .program-icon {
+            background-color: var(--parchment-dim);
+            color: var(--moss-deep);
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: #ddd;
-            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .program-card h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .program-card p {
+            color: var(--ink-soft);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        /* Impact / Benefits */
+        .impact {
+            padding: 100px 0;
+            background-color: var(--ink);
+            color: var(--parchment-dim);
+        }
+
+        .impact .section-title h2 {
+            color: var(--parchment);
+        }
+
+        .impact .section-title p {
+            color: #b7c2ae;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 30px;
+        }
+
+        .impact-item {
+            text-align: center;
+            padding: 20px;
+            border-left: 2px solid var(--moss);
+        }
+
+        .impact-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 40px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .impact-item p {
+            color: #b7c2ae;
+            font-size: 15px;
+        }
+
+        /* Field Reports / Testimonials */
+        .reports {
+            padding: 100px 0;
+            background-color: #fbf8ee;
+        }
+
+        .report-slider {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .report {
+            background: var(--parchment);
+            padding: 45px;
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid var(--line);
+            position: relative;
+        }
+
+        .report::before {
+            content: "\201C";
+            font-family: 'Zilla Slab', serif;
+            font-size: 70px;
+            color: var(--gold);
+            position: absolute;
+            top: 8px;
+            left: 24px;
+            opacity: 0.5;
+        }
+
+        .report-text {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 28px;
+            color: var(--ink-soft);
+        }
+
+        .report-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .author-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--parchment-dim);
+            margin-right: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: #4361ee;
-            font-size: 24px;
+            color: var(--moss-deep);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 20px;
         }
-        
+
         .author-info h4 {
-            font-size: 18px;
-            margin-bottom: 5px;
+            font-size: 17px;
+            margin-bottom: 4px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
         }
-        
+
         .author-info p {
             color: #777;
-            font-size: 14px;
+            font-size: 13px;
         }
-        
-        /* Pricing Section */
-        .pricing {
+
+        /* Give / Pricing */
+        .give {
             padding: 100px 0;
-            background-color: #f9fbfd;
+            background-color: var(--parchment);
         }
-        
-        .pricing-grid {
+
+        .give-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
-        
-        .pricing-card {
-            background: white;
-            border-radius: 10px;
+
+        .give-card {
+            background: #fbf8ee;
+            border: 1px solid var(--line);
+            border-radius: 4px;
             padding: 40px 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             text-align: center;
             transition: transform 0.3s;
         }
-        
-        .pricing-card.featured {
-            border-top: 5px solid #4361ee;
-            transform: scale(1.05);
+
+        .give-card.featured {
+            border-top: 5px solid var(--gold);
+            transform: scale(1.04);
             position: relative;
         }
-        
+
         .featured-badge {
             position: absolute;
-            top: -12px;
+            top: -13px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #4361ee;
-            color: white;
-            padding: 5px 20px;
+            background-color: var(--gold);
+            color: var(--ink);
+            padding: 5px 18px;
             border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
-        }
-        
-        .plan-name {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .plan-price {
-            font-size: 48px;
+            font-size: 13px;
             font-weight: 700;
-            color: #4361ee;
+            font-family: 'IBM Plex Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .give-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .give-card.featured:hover {
+            transform: scale(1.04) translateY(-8px);
+        }
+
+        .plan-name {
+            font-size: 22px;
+            margin-bottom: 6px;
+            color: var(--ink);
+        }
+
+        .plan-sub {
+            color: var(--ink-soft);
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .plan-price {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 42px;
+            font-weight: 600;
+            color: var(--rust);
             margin-bottom: 20px;
         }
-        
+
         .plan-price span {
-            font-size: 16px;
+            font-size: 15px;
             color: #777;
+            font-family: 'Inter', sans-serif;
         }
-        
+
         .plan-features {
             list-style: none;
             margin-bottom: 30px;
+            text-align: left;
         }
-        
+
         .plan-features li {
             padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            color: #555;
+            border-bottom: 1px solid var(--line);
+            color: var(--ink-soft);
+            font-size: 15px;
         }
-        
+
         .plan-features li:last-child {
             border-bottom: none;
         }
-        
+
+        .plan-features i {
+            color: var(--moss-deep);
+            margin-right: 8px;
+            width: 16px;
+        }
+
         /* CTA Section */
         .cta-section {
             padding: 100px 0;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+            background-color: var(--moss-deep);
             text-align: center;
-            color: white;
+            color: var(--parchment);
         }
-        
+
         .cta-section h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
+            font-size: 34px;
+            margin-bottom: 18px;
         }
-        
+
         .cta-section p {
-            font-size: 18px;
-            max-width: 700px;
+            font-size: 17px;
+            max-width: 640px;
             margin: 0 auto 30px;
-            opacity: 0.9;
+            opacity: 0.92;
         }
-        
+
         .cta-section .cta-button {
-            background-color: white;
-            color: #4361ee;
+            background-color: var(--parchment);
+            color: var(--moss-deep);
             font-size: 16px;
-            padding: 15px 40px;
+            padding: 15px 38px;
         }
-        
+
         .cta-section .cta-button:hover {
-            background-color: #f0f4ff;
+            background-color: var(--gold);
+            color: var(--ink);
         }
-        
+
         /* Footer */
         footer {
-            background-color: #222;
-            color: #ccc;
-            padding: 70px 0 20px;
+            background-color: var(--ink);
+            color: #a9b6a3;
+            padding: 65px 0 20px;
         }
-        
+
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 40px;
-            margin-bottom: 50px;
+            margin-bottom: 45px;
         }
-        
+
         .footer-column h3 {
-            font-size: 20px;
-            color: white;
-            margin-bottom: 25px;
+            font-size: 18px;
+            color: var(--parchment);
+            margin-bottom: 22px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
         }
-        
+
         .footer-links {
             list-style: none;
         }
-        
+
         .footer-links li {
-            margin-bottom: 12px;
+            margin-bottom: 11px;
         }
-        
+
         .footer-links a {
-            color: #aaa;
+            color: #a9b6a3;
             text-decoration: none;
+            font-size: 14px;
             transition: color 0.3s;
         }
-        
+
         .footer-links a:hover {
-            color: #4361ee;
+            color: var(--gold);
         }
-        
+
+        .social-icons {
+            display: flex;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .social-icons a {
+            color: #a9b6a3;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--gold);
+        }
+
         .copyright {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #444;
-            font-size: 14px;
-            color: #888;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px;
+            color: #7d8a77;
         }
-        
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .hero-content {
                 flex-direction: column;
             }
-            
+
             .hero-text {
                 padding-right: 0;
-                margin-bottom: 50px;
+                margin-bottom: 45px;
                 text-align: center;
             }
-            
+
             .hero-text p {
                 margin: 0 auto 30px;
             }
-            
-            .pricing-card.featured {
+
+            .give-card.featured {
                 transform: none;
             }
-            
-            .pricing-card.featured:hover {
-                transform: translateY(-10px);
+
+            .give-card.featured:hover {
+                transform: translateY(-8px);
             }
         }
-        
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
-            
+
             .mobile-menu-btn {
                 display: block;
             }
-            
+
             .hero-text h1 {
-                font-size: 36px;
+                font-size: 34px;
             }
-            
+
             .section-title h2 {
-                font-size: 30px;
+                font-size: 28px;
             }
-            
+
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .hero-buttons button {
                 width: 100%;
                 max-width: 300px;
             }
         }
-        
+
         @media (max-width: 576px) {
             .hero {
-                padding: 130px 0 80px;
+                padding: 130px 0 70px;
             }
-            
-            .features, .benefits, .testimonials, .pricing, .cta-section {
-                padding: 70px 0;
+
+            .programs, .impact, .reports, .give, .cta-section {
+                padding: 65px 0;
             }
-            
-            .feature-card, .testimonial {
+
+            .program-card, .report {
                 padding: 25px;
             }
-            
+
             .plan-price {
-                font-size: 36px;
+                font-size: 34px;
             }
         }
     </style>
@@ -570,19 +708,19 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                    <div class="logo-text">Code<span>Flow</span></div>
+                    <div class="logo-icon"><i class="fas fa-paw"></i></div>
+                    <div class="logo-text">Wild<span>Census</span></div>
                 </div>
-                
+
                 <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#">Resources</a></li>
+                    <li><a href="#programs">保护项目</a></li>
+                    <li><a href="#impact">保护成果</a></li>
+                    <li><a href="#reports">野外实录</a></li>
+                    <li><a href="#give">支持我们</a></li>
+                    <li><a href="#">资料库</a></li>
                 </ul>
-                
-                <button class="cta-button">Start Free Trial</button>
+
+                <button class="cta-button">认养一个物种</button>
                 <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
             </nav>
         </div>
@@ -593,142 +731,127 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Build Apps Faster With <span>Visual Development</span></h1>
-                    <p>CodeFlow empowers teams to create enterprise-grade applications with minimal coding. Drag, drop, and connect components to build powerful web and mobile apps in record time.</p>
+                    <div class="hero-eyebrow mono">野外日志 · 记录编号 2026-014</div>
+                    <h1>被记录的每一个物种，都值得被<span>守护</span></h1>
+                    <p>Wild Census 是一支扎根一线的野生动物保护组织。我们的护林员、兽医与研究者常年在栖息地巡护、记录种群、救助伤病野生动物——每一次捐赠，都会被写进真实的巡护日志。</p>
                     <div class="hero-buttons">
-                        <button class="cta-button">Start Building Free</button>
-                        <button class="secondary-button">Watch Demo</button>
+                        <button class="cta-button">立即捐赠</button>
+                        <button class="secondary-button">查看最新种群普查</button>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CodeFlow Platform Interface">
+                    <span class="stamp">种群追踪 · 3,247 只</span>
+                    <img src="https://images.unsplash.com/photo-1616299499792-95ad2c4fda92?auto=format&fit=crop&w=800&q=80" alt="夕阳下的野生大象剪影">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
+    <!-- Programs Section -->
+    <section class="programs" id="programs">
         <div class="container">
             <div class="section-title">
-                <h2>Powerful Features for Rapid Development</h2>
-                <p>CodeFlow provides all the tools you need to build, deploy, and scale applications without writing extensive code.</p>
+                <div class="eyebrow mono">我们在做什么</div>
+                <h2>五条战线，守护同一片荒野</h2>
+                <p>从反盗猎巡护到栖息地修复，每一个项目都由一线团队执行，进展公开可查。</p>
             </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-th-large"></i>
-                    </div>
-                    <h3>Visual Builder</h3>
-                    <p>Drag and drop UI components to design responsive interfaces. Connect data sources with simple point-and-click actions.</p>
+
+            <div class="programs-grid">
+                <div class="program-card">
+                    <div class="program-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>反盗猎巡护</h3>
+                    <p>护林员每日徒步或驾车巡逻保护区边界，拆除陷阱、驱离盗猎者，守住动物最后的安全线。</p>
+                    <span class="stamp">高危区域</span>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Database Integration</h3>
-                    <p>Connect to any data source with built-in connectors. Automatically generate CRUD operations without writing SQL.</p>
+
+                <div class="program-card">
+                    <div class="program-icon"><i class="fas fa-tree"></i></div>
+                    <h3>栖息地修复</h3>
+                    <p>植被恢复、水源治理与迁徙廊道重建，让退化的土地重新成为动物可以安家的地方。</p>
+                    <span class="stamp moss">长期项目</span>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Cross-Platform</h3>
-                    <p>Build once, deploy everywhere. Generate applications for web, iOS, and Android from a single visual design.</p>
+
+                <div class="program-card">
+                    <div class="program-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h3>野生动物救助</h3>
+                    <p>救护站全天候接收受伤、走失或被非法贩运截获的野生动物，康复后送回原生栖息地。</p>
+                    <span class="stamp">紧急响应</span>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Extensible with Code</h3>
-                    <p>Add custom functionality with JavaScript when needed. Our platform doesn't limit your creativity or complexity.</p>
+
+                <div class="program-card">
+                    <div class="program-icon"><i class="fas fa-binoculars"></i></div>
+                    <h3>种群追踪与研究</h3>
+                    <p>通过红外相机、卫星项圈与人工普查，持续记录关键物种的数量变化与活动范围。</p>
+                    <span class="stamp moss">数据驱动</span>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Enterprise Security</h3>
-                    <p>Built-in authentication, authorization, and data encryption. SOC2 compliant with enterprise-grade security features.</p>
+
+                <div class="program-card">
+                    <div class="program-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h3>社区共管教育</h3>
+                    <p>与保护区周边社区合作,提供替代生计培训,把当地居民变成栖息地最坚定的守护者。</p>
+                    <span class="stamp moss">社区共建</span>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>One-Click Deployment</h3>
-                    <p>Deploy to cloud or on-premises with a single click. Automatic scaling and monitoring included.</p>
+
+                <div class="program-card">
+                    <div class="program-icon"><i class="fas fa-truck-medical"></i></div>
+                    <h3>应急救援基金</h3>
+                    <p>面对自然灾害、疫病暴发或大规模冲突事件,快速调配资金与人手,第一时间介入救援。</p>
+                    <span class="stamp">24小时待命</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Benefits Section -->
-    <section class="benefits" id="benefits">
+    <!-- Impact Section -->
+    <section class="impact" id="impact">
         <div class="container">
             <div class="section-title">
-                <h2>Why Choose CodeFlow?</h2>
-                <p>Join thousands of companies accelerating their digital transformation with low-code development.</p>
+                <div class="eyebrow mono">用数字记录的成果</div>
+                <h2>截至本次普查的保护成果</h2>
+                <p>以下数据来自各保护站每月上报的野外日志与救助记录。</p>
             </div>
-            
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>10x Faster Development</h3>
-                    <p>Build applications in days instead of months with visual development tools.</p>
+
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <div class="impact-number mono">128</div>
+                    <p>受持续监测的濒危物种</p>
                 </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3>Reduce Costs by 70%</h3>
-                    <p>Lower development and maintenance costs with fewer resources required.</p>
+
+                <div class="impact-item">
+                    <div class="impact-number mono">46,000</div>
+                    <p>已修复栖息地面积(公顷)</p>
                 </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Citizen Developers</h3>
-                    <p>Enable business users to build solutions with minimal IT assistance.</p>
+
+                <div class="impact-item">
+                    <div class="impact-number mono">3,900+</div>
+                    <p>本年度救助并放归的野生动物</p>
                 </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Scale Effortlessly</h3>
-                    <p>From prototype to enterprise-scale applications with the same platform.</p>
+
+                <div class="impact-item">
+                    <div class="impact-number mono">870</div>
+                    <p>受资助的护林员与志愿者</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
+    <!-- Field Reports / Testimonials -->
+    <section class="reports" id="reports">
         <div class="container">
             <div class="section-title">
-                <h2>Trusted by Industry Leaders</h2>
-                <p>See what our customers have to say about their experience with CodeFlow.</p>
+                <div class="eyebrow mono">来自一线的声音</div>
+                <h2>野外实录</h2>
+                <p>这些文字摘自护林员与研究人员的实地日志。</p>
             </div>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial">
-                    <div class="testimonial-text">
-                        "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SC</div>
+
+            <div class="report-slider">
+                <div class="report">
+                    <div class="report-text">加入巡护队三年,我们把一片曾经频繁出现盗猎陷阱的山谷,变成了雪豹稳定出没的核心栖息地。每一次红外相机拍到幼崽,都是最踏实的时刻。</div>
+                    <div class="report-author">
+                        <div class="author-avatar mono">LZ</div>
                         <div class="author-info">
-                            <h4>Sarah Chen</h4>
-                            <p>CTO, TechGrowth Inc.</p>
+                            <h4>李哲</h4>
+                            <p>资深护林员 · 西部保护站</p>
                         </div>
                     </div>
                 </div>
@@ -736,55 +859,52 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
+    <!-- Give / Pricing Section -->
+    <section class="give" id="give">
         <div class="container">
             <div class="section-title">
-                <h2>Simple, Transparent Pricing</h2>
-                <p>Choose the plan that fits your needs. All plans include core features with no hidden fees.</p>
+                <div class="eyebrow mono">加入守护者行列</div>
+                <h2>选择适合你的支持方式</h2>
+                <p>每一份捐赠都会被记录进当月的野外日志,并向你反馈具体用途。</p>
             </div>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3 class="plan-name">Starter</h3>
-                    <div class="plan-price">$29<span>/month</span></div>
+
+            <div class="give-grid">
+                <div class="give-card">
+                    <h3 class="plan-name">野外支持者</h3>
+                    <p class="plan-sub">适合初次了解我们的你</p>
+                    <div class="plan-price">¥30<span>/月</span></div>
                     <ul class="plan-features">
-                        <li>Up to 5 users</li>
-                        <li>10 GB storage</li>
-                        <li>Basic components</li>
-                        <li>Community support</li>
-                        <li>1 production app</li>
+                        <li><i class="fas fa-check"></i>每月野外简报</li>
+                        <li><i class="fas fa-check"></i>年度保护成果报告</li>
+                        <li><i class="fas fa-check"></i>随时可取消</li>
                     </ul>
-                    <button class="secondary-button">Get Started</button>
+                    <button class="secondary-button">成为支持者</button>
                 </div>
-                
-                <div class="pricing-card featured">
-                    <div class="featured-badge">Most Popular</div>
-                    <h3 class="plan-name">Professional</h3>
-                    <div class="plan-price">$89<span>/month</span></div>
+
+                <div class="give-card featured">
+                    <div class="featured-badge">最受欢迎</div>
+                    <h3 class="plan-name">物种守护人</h3>
+                    <p class="plan-sub">认养一个具体物种或种群</p>
+                    <div class="plan-price">¥150<span>/月</span></div>
                     <ul class="plan-features">
-                        <li>Up to 25 users</li>
-                        <li>100 GB storage</li>
-                        <li>All components</li>
-                        <li>Priority support</li>
-                        <li>10 production apps</li>
-                        <li>Custom branding</li>
+                        <li><i class="fas fa-check"></i>认养证书与物种档案</li>
+                        <li><i class="fas fa-check"></i>专属护林员季度手记</li>
+                        <li><i class="fas fa-check"></i>红外相机影像回顾</li>
+                        <li><i class="fas fa-check"></i>优先参与野外探访日</li>
                     </ul>
-                    <button class="cta-button">Try Free for 14 Days</button>
+                    <button class="cta-button">认养一个物种</button>
                 </div>
-                
-                <div class="pricing-card">
-                    <h3 class="plan-name">Enterprise</h3>
-                    <div class="plan-price">Custom</div>
+
+                <div class="give-card">
+                    <h3 class="plan-name">保护区共建伙伴</h3>
+                    <p class="plan-sub">大额捐赠与企业合作</p>
+                    <div class="plan-price">定制</div>
                     <ul class="plan-features">
-                        <li>Unlimited users</li>
-                        <li>Unlimited storage</li>
-                        <li>All features included</li>
-                        <li>24/7 dedicated support</li>
-                        <li>Unlimited apps</li>
-                        <li>On-premises option</li>
+                        <li><i class="fas fa-check"></i>联合冠名保护项目</li>
+                        <li><i class="fas fa-check"></i>专属实地考察行程</li>
+                        <li><i class="fas fa-check"></i>年度联合发布保护报告</li>
                     </ul>
-                    <button class="secondary-button">Contact Sales</button>
+                    <button class="secondary-button">联系我们</button>
                 </div>
             </div>
         </div>
@@ -793,9 +913,9 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2>Start Building Today</h2>
-            <p>Join over 10,000 companies that use CodeFlow to accelerate their application development. No credit card required for the free trial.</p>
-            <button class="cta-button">Get Started for Free</button>
+            <h2>现在,成为它们的守护者</h2>
+            <p>已有超过 12,000 位捐赠人加入 Wild Census,与一线护林员一起,守住每一片正在消失的荒野。</p>
+            <button class="cta-button">立即捐赠</button>
         </div>
     </section>
 
@@ -805,48 +925,53 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <div class="logo">
-                        <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                        <div class="logo-text">Code<span>Flow</span></div>
+                        <div class="logo-icon"><i class="fas fa-paw"></i></div>
+                        <div class="logo-text">Wild<span>Census</span></div>
                     </div>
-                    <p style="margin-top: 20px; color: #aaa;">The leading visual development platform for building enterprise applications with minimal coding.</p>
+                    <p style="margin-top: 18px; color: #a9b6a3; font-size: 14px;">一支扎根一线的野生动物保护组织,用真实的野外记录换取每一份信任。</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
-                
+
                 <div class="footer-column">
-                    <h3>Product</h3>
+                    <h3>保护项目</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Use Cases</a></li>
-                        <li><a href="#">Integrations</a></li>
-                        <li><a href="#">Roadmap</a></li>
+                        <li><a href="#">反盗猎巡护</a></li>
+                        <li><a href="#">栖息地修复</a></li>
+                        <li><a href="#">野生动物救助</a></li>
+                        <li><a href="#">种群追踪研究</a></li>
+                        <li><a href="#">社区共管教育</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-column">
-                    <h3>Resources</h3>
+                    <h3>参与方式</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Support</a></li>
+                        <li><a href="#">认养一个物种</a></li>
+                        <li><a href="#">成为野外志愿者</a></li>
+                        <li><a href="#">企业合作</a></li>
+                        <li><a href="#">遗产捐赠</a></li>
+                        <li><a href="#">物资捐助</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-column">
-                    <h3>Company</h3>
+                    <h3>关于我们</h3>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">机构介绍</a></li>
+                        <li><a href="#">财务透明报告</a></li>
+                        <li><a href="#">加入团队</a></li>
+                        <li><a href="#">媒体报道</a></li>
+                        <li><a href="#">联系方式</a></li>
                     </ul>
                 </div>
             </div>
-            
+
             <div class="copyright">
-                <p>&copy; 2023 CodeFlow. All rights reserved.</p>
+                <p>&copy; 2026 Wild Census. 保留所有权利。</p>
             </div>
         </div>
     </footer>
@@ -856,19 +981,18 @@
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            
-            // Adjust for mobile
+
             if (window.innerWidth <= 768) {
                 if (navLinks.style.display === 'flex') {
                     navLinks.style.flexDirection = 'column';
                     navLinks.style.position = 'absolute';
-                    navLinks.style.top = '80px';
+                    navLinks.style.top = '76px';
                     navLinks.style.left = '0';
                     navLinks.style.width = '100%';
-                    navLinks.style.backgroundColor = 'white';
+                    navLinks.style.backgroundColor = '#f2ecda';
                     navLinks.style.padding = '20px';
                     navLinks.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
-                    
+
                     const navItems = document.querySelectorAll('.nav-links li');
                     navItems.forEach(item => {
                         item.style.margin = '10px 0';
@@ -876,89 +1000,87 @@
                 }
             }
         });
-        
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
+
                 const targetId = this.getAttribute('href');
                 if(targetId === '#') return;
-                
+
                 const targetElement = document.querySelector(targetId);
                 if(targetElement) {
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
-                    
-                    // Close mobile menu if open
+
                     if(window.innerWidth <= 768) {
                         document.querySelector('.nav-links').style.display = 'none';
                     }
                 }
             });
         });
-        
-        // Simple testimonial slider
-        const testimonials = [
+
+        // Field report rotation
+        const reports = [
             {
-                text: "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions.",
-                name: "Sarah Chen",
-                position: "CTO, TechGrowth Inc.",
-                initials: "SC"
+                text: "加入巡护队三年,我们把一片曾经频繁出现盗猎陷阱的山谷,变成了雪豹稳定出没的核心栖息地。每一次红外相机拍到幼崽,都是最踏实的时刻。",
+                name: "李哲",
+                position: "资深护林员 · 西部保护站",
+                initials: "LZ"
             },
             {
-                text: "We reduced our app development time by 80% using CodeFlow. The visual interface made it easy for our analysts to build data dashboards without waiting for IT resources.",
-                name: "Marcus Johnson",
-                position: "Director of Operations, DataCorp",
-                initials: "MJ"
+                text: "我们用了两年时间跟踪一群迁徙的藏羚羊,数据显示它们的产羔地正在恢复。这背后是无数个凌晨蹲守的清晨,和捐赠人默默的支持。",
+                name: "陈雨",
+                position: "种群研究员",
+                initials: "CY"
             },
             {
-                text: "As a non-technical founder, CodeFlow allowed me to build our MVP in just 2 months. I could test ideas quickly and iterate based on user feedback without deep coding knowledge.",
-                name: "Lisa Wang",
-                position: "Founder, StartupLabs",
-                initials: "LW"
+                text: "去年冬天,我们从盗猎者手中救下一只受伤的雪鸮,三个月后在原生栖息地放归。那一刻我确信,每一分捐款都花在了刀刃上。",
+                name: "马文博",
+                position: "救护站负责人",
+                initials: "MW"
             }
         ];
-        
-        let currentTestimonial = 0;
-        const testimonialElement = document.querySelector('.testimonial');
-        
-        function rotateTestimonial() {
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            updateTestimonial();
+
+        let currentReport = 0;
+        const reportElement = document.querySelector('.report');
+
+        function rotateReport() {
+            currentReport = (currentReport + 1) % reports.length;
+            updateReport();
         }
-        
-        function updateTestimonial() {
-            const testimonial = testimonials[currentTestimonial];
-            testimonialElement.innerHTML = `
-                <div class="testimonial-text">"${testimonial.text}"</div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">${testimonial.initials}</div>
+
+        function updateReport() {
+            const report = reports[currentReport];
+            reportElement.innerHTML = `
+                <div class="report-text">${report.text}</div>
+                <div class="report-author">
+                    <div class="author-avatar mono">${report.initials}</div>
                     <div class="author-info">
-                        <h4>${testimonial.name}</h4>
-                        <p>${testimonial.position}</p>
+                        <h4>${report.name}</h4>
+                        <p>${report.position}</p>
                     </div>
                 </div>
             `;
         }
-        
-        // Auto-rotate testimonials every 5 seconds
-        setInterval(rotateTestimonial, 5000);
-        
+
+        setInterval(rotateReport, 5500);
+
         // CTA button interactions
         document.querySelectorAll('.cta-button').forEach(button => {
             button.addEventListener('click', function() {
-                alert('Thank you for your interest in CodeFlow! You would be redirected to the signup page in a real implementation.');
+                alert('感谢你对 Wild Census 的支持!实际上线后,这里将跳转至捐赠或认养流程页面。');
             });
         });
-        
-        // Pricing card interactions
-        document.querySelectorAll('.pricing-card button').forEach(button => {
+
+        // Give card interactions
+        document.querySelectorAll('.give-card button').forEach(button => {
             button.addEventListener('click', function() {
-                const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
-                alert(`You selected the ${planName} plan. In a real implementation, you would be redirected to the checkout process.`);
+                const planName = this.closest('.give-card').querySelector('.plan-name').textContent;
+                alert(`你选择了「${planName}」支持方案。实际上线后,这里将跳转至捐赠结算流程。`);
             });
         });
     </script>
